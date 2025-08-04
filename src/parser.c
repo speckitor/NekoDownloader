@@ -6,7 +6,7 @@
 static GString *get_image_id(GString *image_json)
 {
         if (!image_json) {
-                g_warning("Failed to get image id, image json is NULL");
+                g_warning("Failed to get image id, image json is NULL\n");
                 return NULL;
         }
 
@@ -14,7 +14,7 @@ static GString *get_image_id(GString *image_json)
 
         GError *error = NULL;
         if (!json_parser_load_from_data(parser, image_json->str, -1, &error)) {
-                g_warning("Failed to parse JSON: %s", error->message);
+                g_warning("Failed to parse JSON: %s\n", error->message);
                 g_error_free(error);
                 g_object_unref(parser);
                 return NULL;
@@ -25,7 +25,7 @@ static GString *get_image_id(GString *image_json)
         if (!json_reader_read_member(reader, "images") ||
             !json_reader_read_element(reader, 0) ||
             !json_reader_read_member(reader, "id")) {
-                g_warning("Failed to read JSON");
+                g_warning("Failed to read JSON\n");
                 g_object_unref(reader);
                 g_object_unref(parser);
                 return NULL;

@@ -15,7 +15,7 @@ GString *curl_perform_request(const char *url)
         CURL *handle = curl_easy_init();
 
         if (!handle) {
-                g_warning("Failed to initialize CURL");
+                g_warning("Failed to initialize CURL\n");
                 return NULL; 
         }
 
@@ -34,7 +34,7 @@ GString *curl_perform_request(const char *url)
                 return buf; 
         }
 
-        g_warning("Request failed: %s (URL: %s)", curl_easy_strerror(result), url);
+        g_warning("Request failed: %s (URL: %s)\n", curl_easy_strerror(result), url);
         g_string_free(buf, TRUE);
         return NULL;
 }
