@@ -1,5 +1,4 @@
 tags
 mktags.sh
 nekodownloader
-*nekodownloader.c
-*.gresource
+src/nekodownloader.c
