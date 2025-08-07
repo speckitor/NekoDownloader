@@ -1,6 +1,5 @@
-main
 tags
 mktags.sh
-
-nekodownloader.c
+nekodownloader
+*nekodownloader.c
 *.gresource
