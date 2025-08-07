@@ -1,3 +1,6 @@
 main
 tags
 mktags.sh
+
+./src/nekodownloader.c
+*.gresource

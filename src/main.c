@@ -15,6 +15,8 @@ typedef struct {
 
 ApplicationContext *ctx;
 
+extern void resources_register_resource (void);
+
 static gboolean reload_finish(gpointer data)
 {
         gtk_spinner_stop(ctx->spin);
@@ -109,7 +111,7 @@ static void activate(GApplication *app)
         GtkButton *save;
         GtkPicture *pic;
 
-        build = gtk_builder_new_from_file("./ui/window.ui");
+        build = gtk_builder_new_from_resource("/org/speckitor/nekodownloader/window.ui");
         win = GTK_WINDOW(gtk_builder_get_object(build, "win"));
         overlay = ADW_TOAST_OVERLAY(gtk_builder_get_object(build, "toast_overlay"));
         refresh = GTK_BUTTON(gtk_builder_get_object(build, "refresh_button"));
@@ -141,6 +143,7 @@ int main(int argc, char **argv)
         int status;
 
         curl_global_init(CURL_GLOBAL_ALL);
+        gtk_init();
 
         app = adw_application_new("org.speckitor.NekoDownloader", G_APPLICATION_DEFAULT_FLAGS);
         g_signal_connect(app, "activate", G_CALLBACK(activate), NULL);
