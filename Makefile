@@ -13,7 +13,7 @@ $(BINARY): clean gresources
 
 gresources:
 	glib-compile-resources src/nekodownloader.gresource.xml \
-		--sourcedir=ui \
+		--sourcedir=data/ui \
 		--generate-source
 
 clean:
