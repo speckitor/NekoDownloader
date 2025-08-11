@@ -1,3 +1,4 @@
+#include <string.h>
 #include <gtk/gtk.h>
 #include <adwaita.h>
 #include <curl/curl.h>
@@ -11,11 +12,16 @@ typedef struct {
         GtkSpinner *spin;
         GtkPicture *pic;
         GBytes *image_bytes;
+        GtkDropDown *nsfw_menu;
 } ApplicationContext;
 
 ApplicationContext *ctx;
 
-extern void resources_register_resource (void);
+static char *urls[] = {
+        "https://nekos.moe/api/v1/random/image?nsfw=false",
+        "https://nekos.moe/api/v1/random/image",
+        "https://nekos.moe/api/v1/random/image?nsfw=true"
+};
 
 static gboolean reload_finish(gpointer data)
 {
@@ -29,11 +35,24 @@ static gboolean reload_finish(gpointer data)
         return FALSE;
 }
 
+static const char *get_link()
+{
+        GtkStringObject *nsfw_obj = gtk_drop_down_get_selected_item(ctx->nsfw_menu);
+        const char *nsfw_str = gtk_string_object_get_string(nsfw_obj);
+
+        if (strcmp(nsfw_str, "No NSFW") == 0)
+                return urls[0];
+        else if (strcmp(nsfw_str, "Allow NSFW") == 0)
+                return urls[1];
+        else
+                return urls[2];
+}
+
 static gpointer reload_async(gpointer data)
 {
         g_idle_add((GSourceFunc)gtk_spinner_start, ctx->spin);
 
-        GString *image_json = curl_perform_request("https://nekos.moe/api/v1/random/image");
+        GString *image_json = curl_perform_request(get_link());
         GString *image_url = get_image_url(image_json);
         GString *image_str = curl_perform_request(image_url->str);
         GBytes *image_bytes = g_string_free_to_bytes(image_str);
@@ -109,7 +128,12 @@ static void activate(GApplication *app)
         GtkSpinner *spin;
         GtkButton *copy;
         GtkButton *save;
+        GtkButton *pref;
         GtkPicture *pic;
+
+        GtkBuilder *pref_build;
+        GtkWindow *pref_win;
+        GtkDropDown *nsfw_menu;
 
         build = gtk_builder_new_from_resource("/org/speckitor/nekodownloader/window.ui");
         win = GTK_WINDOW(gtk_builder_get_object(build, "win"));
@@ -118,18 +142,29 @@ static void activate(GApplication *app)
         spin = GTK_SPINNER(gtk_builder_get_object(build, "spinner"));
         copy = GTK_BUTTON(gtk_builder_get_object(build, "copy"));
         save = GTK_BUTTON(gtk_builder_get_object(build, "save"));
+        pref = GTK_BUTTON(gtk_builder_get_object(build, "pref"));
         pic = GTK_PICTURE(gtk_builder_get_object(build, "pic"));
+
+        pref_build = gtk_builder_new_from_resource("/org/speckitor/nekodownloader/preferences.ui");
+        pref_win = GTK_WINDOW(gtk_builder_get_object(pref_build, "pref_win"));
+        nsfw_menu = GTK_DROP_DOWN(gtk_builder_get_object(pref_build, "nsfw_menu"));
 
         ctx->win = win;
         ctx->overlay = overlay;
         ctx->spin = spin;
         ctx->pic = pic;
+        ctx->nsfw_menu = nsfw_menu;
 
         gtk_window_set_application(win, GTK_APPLICATION(app));
 
         g_signal_connect_swapped(refresh, "clicked", G_CALLBACK(reload), NULL);
         g_signal_connect_swapped(copy, "clicked", G_CALLBACK(copy_image), NULL);
         g_signal_connect_swapped(save, "clicked", G_CALLBACK(save_image), NULL);
+
+        gtk_window_set_hide_on_close(pref_win, TRUE);
+        g_signal_connect_swapped(pref, "clicked", G_CALLBACK(gtk_widget_show), GTK_WIDGET(pref_win));
+
+        gtk_window_set_transient_for(pref_win, win);
 
         gtk_window_present(win);
 

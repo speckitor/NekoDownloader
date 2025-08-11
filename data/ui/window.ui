@@ -24,6 +24,11 @@
                   </object>
                 </child>
                 <child type="end">
+                  <object class="GtkButton" id="pref">
+                    <property name="icon_name">preferences-other</property>
+                  </object>
+                </child>
+                <child type="end">
                   <object class="GtkButton" id="save">
                     <property name="icon_name">document-save</property>
                   </object>

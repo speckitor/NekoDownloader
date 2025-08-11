@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="AdwPreferencesWindow" id="pref_win">
+    <property name="default_height">300</property>
+    <property name="default_width">500</property>
+    <property name="modal">True</property>
+    <property name="search-enabled">False</property>
+    <child>
+      <object class="AdwPreferencesPage">
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title">Images</property>
+            <child>
+              <object class="AdwActionRow">
+                <property name="title">Show NSFW images</property>
+                <property name="activatable_widget">nsfw_menu</property>
+                <child>
+                  <object class="GtkDropDown" id="nsfw_menu">
+                    <property name="valign">center</property>
+                    <property name="model">
+                      <object class="GtkStringList">
+                        <items>
+                          <item>No NSFW</item>
+                          <item>Allow NSFW</item>
+                          <item>Only NSFW</item>
+                        </items>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
