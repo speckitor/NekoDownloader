@@ -69,6 +69,9 @@ static gpointer reload_async(gpointer data)
 
 static void reload()
 {
+        if (gtk_spinner_get_spinning(ctx->spin))
+                return;
+
         g_thread_new("reload_thread", (GThreadFunc)reload_async, NULL);
 }
 
