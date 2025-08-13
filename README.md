@@ -17,9 +17,9 @@ utilizes https://nekos.moe
 coming soon...
 
 ## How to build 
-It is written in Vala, simple and clean code, with few third-party dependencies:
+It is written in C, simple and clean code, with few third-party dependencies:
 
-1. Clone the code from gitlab.
+1. Clone the code from github.
 2. Install gtk4, glib-2.0, json-glib-1.0, libadwaita-1, libcurl, makefile, gcc.
 3. Run in the project directory:
 
