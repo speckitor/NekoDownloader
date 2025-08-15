@@ -35,5 +35,17 @@ uninstall:
 	rm -f $(DESKTOP_DIR)/NekoDownloader.desktop
 	rm -f $(ICON_DIR)/nekodownloader.svg
 
+install_flatpak:
+	flatpak install --user NekoDownloader.flatpak
+	mkdir -p $(DESKTOP_DIR)
+	cp data/NekoDownloaderFlatpak.desktop $(DESKTOP_DIR)
+	mkdir -p $(ICON_DIR)
+	cp data/nekodownloader.svg $(ICON_DIR)
+
+uninstall_flatpak:
+	flatpak remove org.speckitor.NekoDownloader
+	rm -f $(DESKTOP_DIR)/NekoDownloaderFlatpak.desktop
+	rm -f $(ICON_DIR)/nekodownloader.svg
+
 clean:
 	rm -f $(BINARY)

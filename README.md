@@ -16,11 +16,25 @@ utilizes https://nekos.moe
 ## Install from Flathub
 coming soon...
 
-## How to build 
-It is written in C, simple and clean code, with few third-party dependencies:
+## Installing with flatpak 
 
-1. Clone the code from github.
+1. Clone the repository.
+2. Run in the project directory:
+
+    `sudo make install_flatpak`
+
+3. You can uninstall application with:
+
+    `sudo make uninstall_flatpak`
+
+## How to build 
+
+1. Clone the repository.
 2. Install gtk4, glib-2.0, json-glib-1.0, libadwaita-1, libcurl, makefile, gcc.
 3. Run in the project directory:
 
     `sudo make install`
+
+4. You can uninstall application with:
+
+    `sudo make uninstall`

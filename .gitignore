@@ -2,3 +2,5 @@ tags
 mktags.sh
 nekodownloader
 src/nekodownloader.c
+flatpak-app
+.flatpak-builder
