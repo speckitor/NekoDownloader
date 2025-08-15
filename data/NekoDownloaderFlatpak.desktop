@@ -1,5 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=NekoDownloader
-Exec=flatpak run org.speckitor.NekoDownloader
-Icon=nekodownloader

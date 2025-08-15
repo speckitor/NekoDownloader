@@ -28,12 +28,22 @@
                         "name" : "nekodownloader",
                         "buildsystem" : "simple",
                         "build-commands" : [
-                                "install -D nekodownloader /app/bin/nekodownloader"
+                                "install -D nekodownloader /app/bin/nekodownloader",
+                                "install -D org.speckitor.NekoDownloader.desktop /app/share/applications/org.speckitor.NekoDownloader.desktop",
+                                "install -D org.speckitor.NekoDownloader.svg /app/share/icons/hicolor/scalable/apps/org.speckitor.NekoDownloader.svg"
                         ],
                         "sources" : [
                                 {
                                         "type" : "file",
-                                        "path" : "nekodownloader"
+                                        "path" : "../nekodownloader"
+                                }, 
+                                {
+                                        "type" : "file",
+                                        "path" : "org.speckitor.NekoDownloader.desktop"
+                                },
+                                {
+                                        "type" : "file",
+                                        "path" : "org.speckitor.NekoDownloader.svg"
                                 }
                         ]
                 }

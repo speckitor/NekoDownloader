@@ -26,26 +26,14 @@ install: $(BINARY)
 	mkdir -p $(DESKTOP_DIR)/$(BIN_DIR)
 	cp $(BINARY) $(BIN_DIR)
 	mkdir -p $(DESKTOP_DIR)
-	cp data/NekoDownloader.desktop $(DESKTOP_DIR)
+	cp data/org.speckitor.NekoDownloader.desktop $(DESKTOP_DIR)
 	mkdir -p $(ICON_DIR)
-	cp data/nekodownloader.svg $(ICON_DIR)
+	cp data/org.speckitor.NekoDownloader.svg $(ICON_DIR)
 
 uninstall:
 	rm -f $(BIN_DIR)/$(BINARY)
-	rm -f $(DESKTOP_DIR)/NekoDownloader.desktop
-	rm -f $(ICON_DIR)/nekodownloader.svg
-
-install_flatpak:
-	flatpak install --user NekoDownloader.flatpak
-	mkdir -p $(DESKTOP_DIR)
-	cp data/NekoDownloaderFlatpak.desktop $(DESKTOP_DIR)
-	mkdir -p $(ICON_DIR)
-	cp data/nekodownloader.svg $(ICON_DIR)
-
-uninstall_flatpak:
-	flatpak remove org.speckitor.NekoDownloader
-	rm -f $(DESKTOP_DIR)/NekoDownloaderFlatpak.desktop
-	rm -f $(ICON_DIR)/nekodownloader.svg
+	rm -f $(DESKTOP_DIR)/org.speckitor.NekoDownloader.desktop
+	rm -f $(ICON_DIR)/org.speckitor.NekoDownloader.svg
 
 clean:
 	rm -f $(BINARY)

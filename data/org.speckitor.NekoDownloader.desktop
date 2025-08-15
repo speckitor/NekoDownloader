@@ -2,4 +2,4 @@
 Type=Application
 Name=NekoDownloader
 Exec=nekodownloader
-Icon=nekodownloader
+Icon=org.speckitor.NekoDownloader
