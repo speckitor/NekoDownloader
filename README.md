@@ -5,6 +5,8 @@
 NekoDownloader is a light weight neko image downloader written in C and GTK4.
 utilizes https://nekos.moe
 
+<img src="data/example.png"/>
+
 ## Features
 - Download nekos!!!!
 - Copy nekos in clipboard
