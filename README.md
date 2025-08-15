@@ -1,4 +1,4 @@
-<img align="left" alt="Project logo" src="data/nekodownloader.svg" width="125"/>
+<img align="left" alt="Project logo" src="data/org.speckitor.NekoDownloader.svg" width="125"/>
 
 # NekoDownloader
 
