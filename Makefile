@@ -37,3 +37,4 @@ uninstall:
 
 clean:
 	rm -f $(BINARY)
+	rm -r ./src/nekodownloader.c
