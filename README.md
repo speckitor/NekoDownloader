@@ -12,7 +12,7 @@ utilizes https://nekos.moe
 - NSFW only & allow NSFW
 
 ## Install from Flathub
-coming soon...
+no coming soon...
 
 ## How to build 
 
