@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.speckitor.NekoDownloader</id>
+  
+  <name>Neko Downloader</name>
+  <summary>A small gtk4 application for downloading nekos</summary>
+  
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-only</project_license>
+  
+  <description>
+    <p>
+      An application that downloads images from nekos.moe and written fully in C with gtk4
+    </p>
+  </description>
+  
+  <launchable type="desktop-id">org.speckitor.NekoDownloader.desktop</launchable>
+  <icon>org.speckitor.NekoDownloader</icon>
+</component>

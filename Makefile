@@ -13,6 +13,7 @@ PREFIX ?= /usr/local
 BIN_DIR = $(PREFIX)/bin
 DESKTOP_DIR = $(PREFIX)/share/applications
 ICON_DIR = $(PREFIX)/share/icons/hicolor/scalable/apps
+METAINFO_DIR = $(PREFIX)/share/metainfo
 
 $(BINARY): gresources
 	$(CC) $(SOURCE) -o $(BINARY) $(CFLAGS) $(LDFLAGS)
@@ -29,6 +30,8 @@ install: $(BINARY)
 	cp data/org.speckitor.NekoDownloader.desktop $(DESKTOP_DIR)
 	mkdir -p $(ICON_DIR)
 	cp data/org.speckitor.NekoDownloader.svg $(ICON_DIR)
+	mkdir -p $(METAINFO_DIR)
+	cp data/org.speckitor.NekoDownloader.metainfo.xml $(METAINFO_DIR)
 
 uninstall:
 	rm -f $(BIN_DIR)/$(BINARY)
