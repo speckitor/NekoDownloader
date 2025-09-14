@@ -23,7 +23,7 @@ gresources:
 		--generate-source
 
 install: $(BINARY)
-	mkdir -p $(DESKTOP_DIR)/$(BIN_DIR)
+	mkdir -p $(BIN_DIR)
 	cp $(BINARY) $(BIN_DIR)
 	mkdir -p $(DESKTOP_DIR)
 	cp data/org.speckitor.NekoDownloader.desktop $(DESKTOP_DIR)

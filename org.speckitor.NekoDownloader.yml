@@ -1,0 +1,33 @@
+id: org.speckitor.NekoDownloader
+runtime: org.gnome.Platform
+runtime-version: "48"
+sdk: org.gnome.Sdk
+command: nekodownloader
+finish-args:
+  - --share=network
+  - --share=ipc
+  - --socket=fallback-x11
+  - --socket=wayland
+  - --device=dri
+  - --filesystem=home
+
+cleanup:
+  - /include
+  - /lib/pkgconfig
+  - /share/pkgconfig
+  - /share/gtk-doc
+  - /share/man
+  - /share/doc
+  - "*.a"
+  - "*.la"
+
+modules:
+  - name: nekodownloader
+    buildsystem: simple
+    build-commands:
+      - make -j${FLATPAK_BUILDER_N_JOBS}
+      - make install PREFIX=/app
+    sources:
+      - type: git
+        url: https://github.com/speckitor/NekoDownloader.git
+        branch: main
