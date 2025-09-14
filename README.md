@@ -1,5 +1,3 @@
-<img align="left" alt="Project logo" src="data/org.speckitor.NekoDownloader.svg" width="125"/>
-
 # NekoDownloader
 
 NekoDownloader is a light weight neko image downloader written in C and GTK4.
