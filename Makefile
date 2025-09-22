@@ -4,7 +4,7 @@ CFLAGS = -Wall -Wextra -pedantic \
 	-O3 -march=native -ffast-math \
 	$(shell pkg-config --cflags gtk4 glib-2.0 json-glib-1.0 libadwaita-1) \
 	$(DEBUG)
-LDFLAGS = $(shell pkg-config --libs gtk4 glib-2.0 json-glib-1.0 libadwaita-1) -lcurl
+LDFLAGS = $(shell pkg-config --libs gtk4 glib-2.0 json-glib-1.0 libadwaita-1) -lcurl -lwebp
 
 BINARY=nekodownloader
 SOURCE=./src/*.c
@@ -24,14 +24,9 @@ gresources:
 		--generate-source
 
 install: $(BINARY)
-	mkdir -p $(BIN_DIR)
-	cp $(BINARY) $(BIN_DIR)
-	mkdir -p $(DESKTOP_DIR)
-	cp data/org.speckitor.NekoDownloader.desktop $(DESKTOP_DIR)
-	mkdir -p $(ICON_DIR)
-	cp data/org.speckitor.NekoDownloader.svg $(ICON_DIR)
-	mkdir -p $(METAINFO_DIR)
-	cp data/org.speckitor.NekoDownloader.metainfo.xml $(METAINFO_DIR)
+	install -Dm755 $(BINARY) $(BIN_DIR)
+	install -Dm644 data/org.speckitor.NekoDownloader.desktop $(DESKTOP_DIR)/org.speckitor.NekoDownloader.desktop
+	install -Dm644 data/org.speckitor.NekoDownloader.svg $(ICON_DIR)/org.speckitor.NekoDownloader.svg
 
 uninstall:
 	rm -f $(BIN_DIR)/$(BINARY)

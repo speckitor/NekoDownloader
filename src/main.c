@@ -2,6 +2,7 @@
 #include <curl/curl.h>
 #include <gtk/gtk.h>
 #include <string.h>
+#include <webp/decode.h>
 
 #include "api.h"
 #include "parser.h"
@@ -11,54 +12,88 @@ typedef struct {
     AdwToastOverlay *overlay;
     GtkSpinner *spin;
     GtkPicture *pic;
+    GtkSwitch *nekos_switch;
+    GtkCheckButton *rating_list[4];
     GBytes *image_bytes;
-    GtkDropDown *nsfw_menu;
 } ApplicationContext;
 
 ApplicationContext *ctx;
 
-static char *urls[] = {"https://nekos.moe/api/v1/random/image?nsfw=false",
-                       "https://nekos.moe/api/v1/random/image",
-                       "https://nekos.moe/api/v1/random/image?nsfw=true"};
+static const char *api_url = "https://api.nekosapi.com/v4/images/random?limit=1";
 
 static gboolean reload_finish(gpointer data)
 {
     gtk_spinner_stop(ctx->spin);
 
-    GdkTexture *texture = gdk_texture_new_from_bytes(ctx->image_bytes, NULL);
+    int width, height;
+    gsize image_size;
+
+    const uint8_t *image_data = g_bytes_get_data(ctx->image_bytes, &image_size);
+    uint8_t *rgba = WebPDecodeRGBA(image_data, image_size, &width, &height);
+
+    if (!rgba) {
+        g_printerr("Failed to decode webp\n");
+        g_bytes_unref(ctx->image_bytes);
+        return FALSE;
+    }
+
+    GBytes *pixel_bytes = g_bytes_new_take(rgba, width * height * 4);
+
+    GdkTexture *texture =
+        gdk_memory_texture_new(width, height, GDK_MEMORY_R8G8B8A8, pixel_bytes, width * 4);
     gtk_picture_set_paintable(ctx->pic, GDK_PAINTABLE(texture));
 
-    g_bytes_unref(ctx->image_bytes);
+    g_bytes_unref(pixel_bytes);
+    g_object_unref(texture);
+    g_free(ctx->image_bytes);
 
     return FALSE;
 }
 
-static const char *get_link()
+static GString *get_rating(GtkCheckButton *ratings_list[4])
 {
-    GtkStringObject *nsfw_obj = gtk_drop_down_get_selected_item(ctx->nsfw_menu);
-    const char *nsfw_str = gtk_string_object_get_string(nsfw_obj);
+    GString *rating = g_string_new("&rating=");
+    size_t len = rating->len;
 
-    if (strcmp(nsfw_str, "No NSFW") == 0)
-        return urls[0];
-    else if (strcmp(nsfw_str, "Allow NSFW") == 0)
-        return urls[1];
-    else
-        return urls[2];
+    for (int i = 0; i < 4; ++i) {
+        if (gtk_check_button_get_active(ratings_list[i])) {
+            g_string_append(rating, gtk_check_button_get_label(ratings_list[i]));
+            g_string_append(rating, ",");
+        }
+    }
+
+    if (len == rating->len) {
+        g_string_free(rating, TRUE);
+        return NULL;
+    }
+
+    return rating;
 }
 
 static gpointer reload_async(gpointer data)
 {
     g_idle_add((GSourceFunc)gtk_spinner_start, ctx->spin);
 
-    GString *image_json = curl_perform_request(get_link());
+    GString *url = g_string_new(api_url);
+
+    if (gtk_switch_get_active(ctx->nekos_switch)) {
+        g_string_append(url, "&tags=catgirl");
+    }
+
+    GString *rating = get_rating(ctx->rating_list);
+    if (rating) {
+        g_string_append(url, rating->str);
+        g_string_free(rating, TRUE);
+    }
+
+    GString *image_json = curl_perform_request(url->str);
     GString *image_url = get_image_url(image_json);
     GString *image_str = curl_perform_request(image_url->str);
-    GBytes *image_bytes = g_string_free_to_bytes(image_str);
+
+    ctx->image_bytes = g_string_free_to_bytes(image_str);
 
     g_string_free(image_json, TRUE);
     g_string_free(image_url, TRUE);
-
-    ctx->image_bytes = image_bytes;
 
     g_idle_add_full(G_PRIORITY_DEFAULT, reload_finish, NULL, NULL);
 
@@ -134,7 +169,11 @@ static void activate(GApplication *app)
 
     GtkBuilder *pref_build;
     GtkWindow *pref_win;
-    GtkDropDown *nsfw_menu;
+    GtkCheckButton *safe_btn;
+    GtkCheckButton *suggestive_btn;
+    GtkCheckButton *borderline_btn;
+    GtkCheckButton *explicit_btn;
+    GtkSwitch *nekos_switch;
 
     build = gtk_builder_new_from_resource("/org/speckitor/nekodownloader/window.ui");
     win = GTK_WINDOW(gtk_builder_get_object(build, "win"));
@@ -148,13 +187,21 @@ static void activate(GApplication *app)
 
     pref_build = gtk_builder_new_from_resource("/org/speckitor/nekodownloader/preferences.ui");
     pref_win = GTK_WINDOW(gtk_builder_get_object(pref_build, "pref_win"));
-    nsfw_menu = GTK_DROP_DOWN(gtk_builder_get_object(pref_build, "nsfw_menu"));
+    safe_btn = GTK_CHECK_BUTTON(gtk_builder_get_object(pref_build, "safe_btn"));
+    suggestive_btn = GTK_CHECK_BUTTON(gtk_builder_get_object(pref_build, "suggestive_btn"));
+    borderline_btn = GTK_CHECK_BUTTON(gtk_builder_get_object(pref_build, "borderline_btn"));
+    explicit_btn = GTK_CHECK_BUTTON(gtk_builder_get_object(pref_build, "explicit_btn"));
+    nekos_switch = GTK_SWITCH(gtk_builder_get_object(pref_build, "nekos_switch"));
 
     ctx->win = win;
     ctx->overlay = overlay;
     ctx->spin = spin;
     ctx->pic = pic;
-    ctx->nsfw_menu = nsfw_menu;
+    ctx->rating_list[0] = safe_btn;
+    ctx->rating_list[1] = suggestive_btn;
+    ctx->rating_list[2] = borderline_btn;
+    ctx->rating_list[3] = explicit_btn;
+    ctx->nekos_switch = nekos_switch;
 
     gtk_window_set_application(win, GTK_APPLICATION(app));
 

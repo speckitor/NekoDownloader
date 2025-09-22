@@ -12,20 +12,65 @@
             <property name="title">Images</property>
             <child>
               <object class="AdwActionRow">
-                <property name="title">Show NSFW images</property>
-                <property name="activatable_widget">nsfw_menu</property>
+                <property name="title">Images rating</property>
+                <property name="activatable_widget">nsfw_grid</property>
                 <child>
-                  <object class="GtkDropDown" id="nsfw_menu">
-                    <property name="valign">center</property>
-                    <property name="model">
-                      <object class="GtkStringList">
-                        <items>
-                          <item>No NSFW</item>
-                          <item>Allow NSFW</item>
-                          <item>Only NSFW</item>
-                        </items>
+                  <object class="GtkGrid" id="nsfw_grid">
+                    <property name="row-spacing">5</property>
+                    <property name="column-spacing">5</property>
+                    <property name="margin_top">10</property>
+                    <property name="margin_bottom">10</property>
+                    <child>
+                      <object class="GtkCheckButton" id="safe_btn">
+                        <property name="label">safe</property>
+                        <property name="active">True</property>
+                        <layout>
+                          <property name="column">0</property>
+                          <property name="row">0</property>
+                        </layout>
                       </object>
-                    </property>
+                    </child>
+                    <child>
+                      <object class="GtkCheckButton" id="suggestive_btn">
+                        <property name="label">suggestive</property>
+                        <layout>
+                          <property name="column">0</property>
+                          <property name="row">1</property>
+                        </layout>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckButton" id="borderline_btn">
+                        <property name="label">borderline</property>
+                        <layout>
+                          <property name="column">1</property>
+                          <property name="row">0</property>
+                        </layout>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckButton" id="explicit_btn">
+                        <property name="label">explicit</property>
+                        <layout>
+                          <property name="column">1</property>
+                          <property name="row">1</property>
+                        </layout>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwActionRow">
+                <property name="title">Show only nekos</property>
+                <property name="activatable_widget">nekos_switch</property>
+                <child>
+                  <object class="GtkSwitch" id="nekos_switch">
+                    <property name="margin_top">15</property>
+                    <property name="margin_bottom">15</property>
+                    <property name="active">True</property>
+                    <property name="vexpand">False</property>
                   </object>
                 </child>
               </object>

@@ -25,9 +25,13 @@ modules:
   - name: nekodownloader
     buildsystem: simple
     build-commands:
-      - make -j${FLATPAK_BUILDER_N_JOBS}
-      - make install PREFIX=/app
+      - install -D nekodownloader /app/bin/nekodownloader
+      - install -D org.speckitor.NekoDownloader.desktop /app/share/applications/org.speckitor.NekoDownloader.desktop
+      - install -D org.speckitor.NekoDownloader.svg /app/share/icons/hicolor/scalable/apps/org.speckitor.NekoDownloader.svg
     sources:
-      - type: git
-        url: https://github.com/speckitor/NekoDownloader.git
-        branch: main
+      - type: file
+        path: ./nekodownloader
+      - type: file
+        path: ./data/org.speckitor.NekoDownloader.svg
+      - type: file
+        path: ./data/org.speckitor.NekoDownloader.desktop
