@@ -1,8 +1,7 @@
-# NekoDownloader
+# Neko Downloader
 
-NekoDownloader is a light weight neko image downloader written in C and GTK4.
-utilizes https://nekosapi.com
-
+Neko Downloader is a lightweight application that downloads random images from https://nekosapi.com.
+Written in C and GTK4. 
 <img src="data/example.png"/>
 
 ## Features
