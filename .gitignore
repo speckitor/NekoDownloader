@@ -1,7 +1,10 @@
 tags
-mktags.sh
+compile_commands.json
+
 nekodownloader
 src/nekodownloader.c
+
 flatpak-app
 .flatpak-builder
+
 .cache/
